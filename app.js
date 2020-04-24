@@ -179,12 +179,17 @@ document.addEventListener('DOMContentLoaded',()=>{
             squares[currentIndex].classList.add('frog')
         }
     }
-   
+  //generate random HexColor
+    const generateRandomColor = () =>{
+        let hex = (Math.random() * 0xfffff * 1000000).toString(16)
+        return '#' + hex.slice(0,6)
+    }
   //a collective function which handles all the moving pieces
     function movePieces(){
         console.log('peices moved')
         currentTime--
         timeLeft.textContent = currentTime
+        timeLeft.style.color = generateRandomColor()
         autoMoveCars()
         autoMoveLogs()
         moveWithLogLeft()
