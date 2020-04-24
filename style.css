@@ -15,9 +15,6 @@
 .starting-block {
   background-color: blue;
 }
-.frog {
-  background-color: green;
-}
 .c1 {
   background-color: black;
 }
@@ -33,4 +30,7 @@
 .l4,
 .l5 {
   background-color: lightblue;
+}
+.frog {
+  background-color: green;
 }

@@ -4,10 +4,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     const timeLeft = document.querySelector('#time-left')
     const resultDisplay = document.querySelector('#result')
     const startBtn = document.querySelector('#button')
-    const carsLeft = document.querySelector('.cars-left')
-    const carsRight = document.querySelector('.cars-right')
-    const logsLeft = document.querySelector('.log-left')
-    const logsRight = document.querySelector('.log-right')
+    const carsLeft = document.querySelectorAll('.car-left')
+    const carsRight = document.querySelectorAll('.car-right')
+    const logsLeft = document.querySelectorAll('.log-left')
+    const logsRight = document.querySelectorAll('.log-right')
 
    //initialize game
     let width = 9
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     let timerId
     let currentTime = 20
    //render frong on starting block
-    squares[currentIndex].classList.add('frog')
+   // squares[currentIndex].classList.add('frog')
 
    //write function to move the frog based on arrow keys
     function moveFrog(e){
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded',()=>{
                 if(currentIndex % width !==0) currentIndex -=1
                 break;
             case 38:
-                if(currentIndex - width >= 0) currentIndex-= width
+                if(currentIndex - width >= 0) currentIndex -= width
                 break;
             case 39:
                 if(currentIndex % width < width -1) currentIndex +=1
@@ -55,15 +55,15 @@ document.addEventListener('DOMContentLoaded',()=>{
             case carLeft.classList.contains('c1'):
                 carLeft.classList.remove('c1')
                 carLeft.classList.add('c2')
-            break;
+                break;
             case carLeft.classList.contains('c2'):
                 carLeft.classList.remove('c2')
                 carLeft.classList.add('c3')
-            break;
+                break;
             case carLeft.classList.contains('c3'):
                 carLeft.classList.remove('c3')
                 carLeft.classList.add('c1')
-            break;
+                break;
         }
     }
   //move the car right on a time loop
@@ -155,20 +155,51 @@ document.addEventListener('DOMContentLoaded',()=>{
           || (squares[currentIndex].classList.contains('l5'))  
           ||(squares[currentIndex].classList.contains('l4'))){
               resultDisplay.innerHTML='YOU LOOSE'
+              resultDisplay.style.color = "red"
               squares[currentIndex].classList.remove('frog')
               clearInterval(timerId)
               document.removeEventListener('keyup',moveFrog)
         }
     }
-
-
-
-
-
-
-
-
-
-
+   
+  //move the frog when its on the log moving left
+    function moveWithLogLeft(){
+        //we got the index of log from the html's hardcoded divs
+        if(currentIndex >=27 && currentIndex <35){
+            squares[currentIndex].classList.remove('frog') 
+            currentIndex +=1
+            squares[currentIndex].classList.add('frog')
+        }
+    }
+  //move the frog when its on the log movinf right
+    function moveWithLogRight(){
+        if(currentIndex > 18 && currentIndex <= 26){
+            squares[currentIndex].classList.remove('frog')
+            currentIndex -=1
+            squares[currentIndex].classList.add('frog')
+        }
+    }
+   
+  //a collective function which handles all the moving pieces
+    function movePieces(){
+        console.log('peices moved')
+        currentTime--
+        timeLeft.textContent = currentTime
+        autoMoveCars()
+        autoMoveLogs()
+        moveWithLogLeft()
+        moveWithLogRight()
+        loose()
+    }
+  //start/pause the game
+    startBtn.addEventListener('click',()=>{
+        console.log('start clicked')
+        if(timerId){
+            clearInterval(timerId)
+        }else{
+            timerId = setInterval(movePieces,1000)
+            document.addEventListener('keyup',moveFrog)
+        }
+    })
 
 })
